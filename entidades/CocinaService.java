@@ -9,7 +9,18 @@ import java.util.Map;
 
 public class CocinaService {
 
+    private static CocinaService instance = null;
     private final DespensaService despensaService = new DespensaService();
+
+    private CocinaService() {
+    }
+
+    public static CocinaService getInstance() {
+        if (instance == null) {
+            instance = new CocinaService();
+        }
+        return instance;
+    }
 
     public void cocinar(Despensa despensa, Receta receta) throws StockInsuficiente, VidaUtilInsuficiente {
         despensaService.checkIngredientes(despensa, receta);

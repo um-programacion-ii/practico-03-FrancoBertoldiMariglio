@@ -10,6 +10,10 @@ import entidades.utensilios.Olla;
 import entidades.utensilios.Sarten;
 import entidades.utensilios.Tenedor;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.FutureTask;
+
 public class Main {
     public static void main(String[] args) throws StockInsuficiente, VidaUtilInsuficiente {
         Ingrediente ingrediente1 = new Ingrediente();
@@ -79,10 +83,19 @@ public class Main {
         Milanesa milanesa = new Milanesa();
         System.out.println(fideosConCrema + "\n");
 
-        Chef chef = new Chef("Gordon Ramsay", 3);
+        Chef chef = new Chef("Gordon Ramsay", 3, despensa, fideosConCrema);
         System.out.println(chef + "\n");
 
-        chef.cocinaService.cocinar(despensa, fideosConCrema);
-        chef.cocinaService.cocinar(despensa, milanesa);
+        Chef chef2 = new Chef("Juliana Lopez", 2, despensa, milanesa);
+        System.out.println(chef2 + "\n");
+
+        FutureTask<Void> futureTask1 = new FutureTask<>(chef);
+        FutureTask<Void> futureTask2 = new FutureTask<>(chef2);
+
+        ExecutorService executorService = Executors.newFixedThreadPool(2);
+        executorService.submit(futureTask1);
+        executorService.submit(futureTask2);
+
+        executorService.shutdown();
     }
 }
