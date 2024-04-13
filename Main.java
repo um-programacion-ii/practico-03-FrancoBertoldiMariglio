@@ -1,101 +1,117 @@
 import entidades.*;
 import entidades.excepciones.StockInsuficiente;
 import entidades.excepciones.VidaUtilInsuficiente;
-import entidades.recetas.FideosConCrema;
-import entidades.recetas.Milanesa;
-import entidades.utensilios.Cuchillo;
-import entidades.utensilios.Cuchara;
-import entidades.utensilios.Freidora;
-import entidades.utensilios.Olla;
-import entidades.utensilios.Sarten;
-import entidades.utensilios.Tenedor;
+import entidades.recetas.*;
+import entidades.utensilios.*;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.FutureTask;
 
 public class Main {
     public static void main(String[] args) throws StockInsuficiente, VidaUtilInsuficiente {
-        Ingrediente ingrediente1 = new Ingrediente();
-        ingrediente1.setNombre("Harina");
-        ingrediente1.setCantidad(500);
 
-        Ingrediente ingrediente2 = new Ingrediente();
-        ingrediente2.setNombre("Azucar");
-        ingrediente2.setCantidad(200);
+        Ingrediente ingrediente1 = new Ingrediente("Harina", 500);
+        Ingrediente ingrediente2 = new Ingrediente("Azucar", 200);
+        Ingrediente ingrediente3 = new Ingrediente("Sal", 100);
+        Ingrediente ingrediente4 = new Ingrediente("Pimienta", 50);
+        Ingrediente ingrediente5 = new Ingrediente("Manteca", 100);
+        Ingrediente ingrediente6 = new Ingrediente("Fideos", 1000);
+        Ingrediente ingrediente7 = new Ingrediente("Crema", 300);
+        Ingrediente ingrediente8 = new Ingrediente("Huevo", 6);
+        Ingrediente ingrediente9 = new Ingrediente("Carne", 500);
+        Ingrediente ingrediente10 = new Ingrediente("Pan rallado", 250);
+        Ingrediente ingrediente11 = new Ingrediente("Aceite", 100);
+        Ingrediente ingrediente12 = new Ingrediente("Queso", 100);
+        Ingrediente ingrediente13 = new Ingrediente("Cebolla", 100);
+        Ingrediente ingrediente14 = new Ingrediente("Papa", 500);
+        Ingrediente ingrediente15 = new Ingrediente("Leche", 100);
 
-        Ingrediente ingrediente3 = new Ingrediente();
-        ingrediente3.setNombre("Sal");
-        ingrediente3.setCantidad(100);
+        Olla olla = new Olla();
+        Sarten sarten = new Sarten();
+        Cuchillo cuchillo = new Cuchillo();
+        Tenedor tenedor = new Tenedor();
+        Cuchara cuchara = new Cuchara();
+        Freidora freidora = new Freidora();
 
-        Ingrediente ingrediente4 = new Ingrediente();
-        ingrediente4.setNombre("Pimienta");
-        ingrediente4.setCantidad(50);
+        List<Receta> recetas = List.of(
+                new FideosConCrema(), new Milanesa(), new PastelDePapa()
+        );
 
-        Ingrediente ingrediente5 = new Ingrediente();
-        ingrediente5.setNombre("Manteca");
-        ingrediente5.setCantidad(100);
+        List<Despensa> despensas = new ArrayList<>();
+        for (int i = 0; i < 8; i++) {
+            Despensa despensa = new Despensa();
+            despensa.addIngrediente(ingrediente1);
+            despensa.addIngrediente(ingrediente2);
+            despensa.addIngrediente(ingrediente3);
+            despensa.addIngrediente(ingrediente4);
+            despensa.addIngrediente(ingrediente5);
+            despensa.addIngrediente(ingrediente6);
+            despensa.addIngrediente(ingrediente7);
+            despensa.addIngrediente(ingrediente8);
+            despensa.addIngrediente(ingrediente9);
+            despensa.addIngrediente(ingrediente10);
+            despensa.addIngrediente(ingrediente11);
+            despensa.addIngrediente(ingrediente12);
+            despensa.addIngrediente(ingrediente13);
+            despensa.addIngrediente(ingrediente14);
+            despensa.addIngrediente(ingrediente15);
+            despensa.addUtensilio(olla);
+            despensa.addUtensilio(sarten);
+            despensa.addUtensilio(cuchillo);
+            despensa.addUtensilio(tenedor);
+            despensa.addUtensilio(cuchara);
+            despensa.addUtensilio(freidora);
+            despensas.add(despensa);
+        }
 
-        Ingrediente ingrediente6 = new Ingrediente();
-        ingrediente6.setNombre("Fideos");
-        ingrediente6.setCantidad(1000);
+        System.out.println(despensas.size());
 
-        Ingrediente ingrediente7 = new Ingrediente();
-        ingrediente7.setNombre("Crema");
-        ingrediente7.setCantidad(300);
+        List<Chef> chefsA = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            Chef chef = new Chef("Chef " + (i + 1), i % recetas.size(), despensas.get(i), recetas.get(i % recetas.size()));
+            chefsA.add(chef);
+        }
 
-        Ingrediente ingrediente8 = new Ingrediente();
-        ingrediente8.setNombre("Huevo");
-        ingrediente8.setCantidad(6);
+        // Domingo a Jueves
+        List<Chef> chefsB = new ArrayList<>();
+        for (int i = 5; i < 8; i++) {
+            Chef chef = new Chef("Chef " + (i + 1), i % recetas.size(), despensas.get(i), recetas.get(i % recetas.size()));
+            chefsB.add(chef);
+        }
 
-        Ingrediente ingrediente9 = new Ingrediente();
-        ingrediente9.setNombre("Carne");
-        ingrediente9.setCantidad(500);
+        List<String> dias = new ArrayList<>();
+        dias.add("Domingo");
+        dias.add("Lunes");
+        dias.add("Martes");
+        dias.add("Miércoles");
+        dias.add("Jueves");
+        dias.add("Viernes");
+        dias.add("Sábado");
+        dias.add("Feriado");
 
-        Ingrediente ingrediente10 = new Ingrediente();
-        ingrediente10.setNombre("Pan rallado");
-        ingrediente10.setCantidad(250);
+        Random random = new Random();
+        int indiceDiaAleatorio = random.nextInt(dias.size());
+        String diaAleatorio = dias.get(indiceDiaAleatorio);
+        System.out.println("Hoy es " + diaAleatorio);
 
-        Ingrediente ingrediente11 = new Ingrediente();
-        ingrediente11.setNombre("Aceite");
-        ingrediente11.setCantidad(100);
-
-        Despensa despensa = new Despensa();
-        despensa.addIngrediente(ingrediente1);
-        despensa.addIngrediente(ingrediente2);
-        despensa.addIngrediente(ingrediente3);
-        despensa.addIngrediente(ingrediente4);
-        despensa.addIngrediente(ingrediente5);
-        despensa.addIngrediente(ingrediente6);
-        despensa.addIngrediente(ingrediente7);
-        despensa.addIngrediente(ingrediente8);
-        despensa.addIngrediente(ingrediente9);
-        despensa.addIngrediente(ingrediente10);
-        despensa.addIngrediente(ingrediente11);
-        despensa.addUtensilio(new Olla());
-        despensa.addUtensilio(new Sarten());
-        despensa.addUtensilio(new Cuchillo());
-        despensa.addUtensilio(new Tenedor());
-        despensa.addUtensilio(new Cuchara());
-        despensa.addUtensilio(new Freidora());
-
-        FideosConCrema fideosConCrema = new FideosConCrema();
-        Milanesa milanesa = new Milanesa();
-        System.out.println(fideosConCrema + "\n");
-
-        Chef chef = new Chef("Gordon Ramsay", 3, despensa, fideosConCrema);
-        System.out.println(chef + "\n");
-
-        Chef chef2 = new Chef("Juliana Lopez", 2, despensa, milanesa);
-        System.out.println(chef2 + "\n");
-
-        FutureTask<Void> futureTask1 = new FutureTask<>(chef);
-        FutureTask<Void> futureTask2 = new FutureTask<>(chef2);
-
-        ExecutorService executorService = Executors.newFixedThreadPool(2);
-        executorService.submit(futureTask1);
-        executorService.submit(futureTask2);
-
-        executorService.shutdown();
+        if (diaAleatorio.equals("Lunes") || diaAleatorio.equals("Martes") || diaAleatorio.equals("Miércoles") || diaAleatorio.equals("Jueves")) {
+            ExecutorService executorServiceA = Executors.newFixedThreadPool(3);
+            for (Chef chef : chefsA) {
+                FutureTask<Void> futureTask = new FutureTask<>(chef);
+                executorServiceA.submit(futureTask);
+            }
+            executorServiceA.shutdown();
+        } else {
+            ExecutorService executorServiceB = Executors.newFixedThreadPool(5);
+            for (Chef chef : chefsB) {
+                FutureTask<Void> futureTask = new FutureTask<>(chef);
+                executorServiceB.submit(futureTask);
+            }
+            executorServiceB.shutdown();
+        }
     }
 }
